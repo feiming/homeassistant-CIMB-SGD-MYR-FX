@@ -26,6 +26,21 @@ class _SensorStateClass:
     MEASUREMENT = "measurement"
 
 
+class _ConfigEntry:
+    """Minimal stub of ConfigEntry."""
+
+
+class _ConfigFlow:
+    """Minimal stub of ConfigFlow."""
+
+    def __init_subclass__(cls, domain=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+
+
+class _ConfigEntries:
+    ConfigFlow = _ConfigFlow
+
+
 def _build_stubs():
     coordinator_mod = ModuleType("homeassistant.helpers.update_coordinator")
     coordinator_mod.UpdateFailed = UpdateFailed
@@ -39,6 +54,16 @@ def _build_stubs():
     aiohttp_mod = ModuleType("homeassistant.helpers.aiohttp_client")
     aiohttp_mod.async_get_clientsession = MagicMock()
 
+    entity_platform_mod = ModuleType("homeassistant.helpers.entity_platform")
+    entity_platform_mod.AddEntitiesCallback = MagicMock()
+
+    config_entries_mod = ModuleType("homeassistant.config_entries")
+    config_entries_mod.ConfigEntry = _ConfigEntry
+    config_entries_mod.ConfigFlow = _ConfigFlow
+
+    core_mod = ModuleType("homeassistant.core")
+    core_mod.HomeAssistant = MagicMock()
+
     ha_mod = ModuleType("homeassistant")
     components_mod = ModuleType("homeassistant.components")
     helpers_mod = ModuleType("homeassistant.helpers")
@@ -48,8 +73,11 @@ def _build_stubs():
             "homeassistant": ha_mod,
             "homeassistant.components": components_mod,
             "homeassistant.components.sensor": sensor_mod,
+            "homeassistant.config_entries": config_entries_mod,
+            "homeassistant.core": core_mod,
             "homeassistant.helpers": helpers_mod,
             "homeassistant.helpers.aiohttp_client": aiohttp_mod,
+            "homeassistant.helpers.entity_platform": entity_platform_mod,
             "homeassistant.helpers.update_coordinator": coordinator_mod,
         }
     )

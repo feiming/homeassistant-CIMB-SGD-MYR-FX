@@ -6,7 +6,10 @@ from datetime import timedelta
 from bs4 import BeautifulSoup
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
@@ -28,8 +31,20 @@ HEADERS = {
 }
 
 
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up the CIMB FX sensor from a config entry (UI flow)."""
+    session = async_get_clientsession(hass)
+    coordinator = CIMBFXCoordinator(hass, session)
+    await coordinator.async_config_entry_first_refresh()
+    async_add_entities([CIMBFXSensor(coordinator)])
+
+
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up the CIMB FX sensor platform."""
+    """Set up the CIMB FX sensor platform (YAML flow, kept for compatibility)."""
     session = async_get_clientsession(hass)
     coordinator = CIMBFXCoordinator(hass, session)
     await coordinator.async_config_entry_first_refresh()
