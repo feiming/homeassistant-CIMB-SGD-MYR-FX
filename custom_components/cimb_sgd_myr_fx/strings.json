@@ -3,7 +3,10 @@
     "step": {
       "user": {
         "title": "CIMB SGD to MYR FX Rate",
-        "description": "Fetches the live SGD to MYR exchange rate from CIMB Clicks every 30 minutes."
+        "description": "Fetches the live SGD to MYR exchange rate from CIMB Clicks.",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
       }
     },
     "abort": {

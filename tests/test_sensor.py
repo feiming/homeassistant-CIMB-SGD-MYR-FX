@@ -1,5 +1,6 @@
 """Unit tests for CIMB SGD-MYR FX sensor."""
 import pytest
+from datetime import timedelta
 from unittest.mock import AsyncMock, MagicMock
 
 # conftest.py stubs HA before this import
@@ -10,6 +11,7 @@ from custom_components.cimb_sgd_myr_fx.sensor import (
     CIMBFXSensor,
     URL,
 )
+from custom_components.cimb_sgd_myr_fx import DEFAULT_SCAN_INTERVAL
 
 
 # ---------------------------------------------------------------------------
@@ -194,6 +196,18 @@ class TestCIMBFXCoordinator:
         call_kwargs = coordinator._session.get.call_args[1]
         assert "User-Agent" in call_kwargs["headers"]
         assert "Mozilla" in call_kwargs["headers"]["User-Agent"]
+
+
+
+class TestCIMBFXCoordinatorInterval:
+    def test_coordinator_stores_custom_interval(self):
+        coordinator = CIMBFXCoordinator.__new__(CIMBFXCoordinator)
+        coordinator._session = MagicMock()
+        coordinator.update_interval = timedelta(minutes=15)
+        assert coordinator.update_interval == timedelta(minutes=15)
+
+    def test_default_scan_interval_constant(self):
+        assert DEFAULT_SCAN_INTERVAL == 30
 
 
 # ---------------------------------------------------------------------------

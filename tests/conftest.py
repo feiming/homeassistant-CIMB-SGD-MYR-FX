@@ -64,6 +64,9 @@ def _build_stubs():
     core_mod = ModuleType("homeassistant.core")
     core_mod.HomeAssistant = MagicMock()
 
+    const_mod = ModuleType("homeassistant.const")
+    const_mod.CONF_SCAN_INTERVAL = "scan_interval"
+
     ha_mod = ModuleType("homeassistant")
     components_mod = ModuleType("homeassistant.components")
     helpers_mod = ModuleType("homeassistant.helpers")
@@ -74,6 +77,7 @@ def _build_stubs():
             "homeassistant.components": components_mod,
             "homeassistant.components.sensor": sensor_mod,
             "homeassistant.config_entries": config_entries_mod,
+            "homeassistant.const": const_mod,
             "homeassistant.core": core_mod,
             "homeassistant.helpers": helpers_mod,
             "homeassistant.helpers.aiohttp_client": aiohttp_mod,

@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -15,10 +16,10 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from . import DEFAULT_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(minutes=30)
 URL = "https://www.cimbclicks.com.sg/sgd-to-myr"
 HEADERS = {
     "User-Agent": (
@@ -37,8 +38,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the CIMB FX sensor from a config entry (UI flow)."""
+    interval_minutes = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
     session = async_get_clientsession(hass)
-    coordinator = CIMBFXCoordinator(hass, session)
+    coordinator = CIMBFXCoordinator(hass, session, timedelta(minutes=interval_minutes))
     await coordinator.async_config_entry_first_refresh()
     async_add_entities([CIMBFXSensor(coordinator)])
 
@@ -46,7 +48,9 @@ async def async_setup_entry(
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the CIMB FX sensor platform (YAML flow, kept for compatibility)."""
     session = async_get_clientsession(hass)
-    coordinator = CIMBFXCoordinator(hass, session)
+    coordinator = CIMBFXCoordinator(
+        hass, session, timedelta(minutes=DEFAULT_SCAN_INTERVAL)
+    )
     await coordinator.async_config_entry_first_refresh()
     async_add_entities([CIMBFXSensor(coordinator)])
 
@@ -54,12 +58,12 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 class CIMBFXCoordinator(DataUpdateCoordinator):
     """Fetches SGD-MYR rate from CIMB Clicks."""
 
-    def __init__(self, hass, session):
+    def __init__(self, hass, session, update_interval: timedelta):
         super().__init__(
             hass,
             _LOGGER,
             name="CIMB SGD-MYR FX",
-            update_interval=SCAN_INTERVAL,
+            update_interval=update_interval,
         )
         self._session = session
 

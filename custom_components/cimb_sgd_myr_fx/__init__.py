@@ -4,6 +4,7 @@ from homeassistant.core import HomeAssistant
 
 DOMAIN = "cimb_sgd_myr_fx"
 PLATFORMS = ["sensor"]
+DEFAULT_SCAN_INTERVAL = 30  # minutes
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
