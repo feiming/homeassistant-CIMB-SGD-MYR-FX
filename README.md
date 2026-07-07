@@ -62,6 +62,37 @@ Restart Home Assistant again. The sensor `sensor.cimb_sgd_to_myr_fx_rate` will a
 
 ---
 
+## Development & Testing
+
+### Requirements
+
+- Python 3.12+
+- Dependencies listed in `requirements-test.txt`
+
+### Install test dependencies
+
+```bash
+pip install -r requirements-test.txt
+```
+
+### Run tests
+
+```bash
+pytest tests/ -v
+```
+
+No Home Assistant installation is required — HA modules are stubbed out in `tests/conftest.py`.
+
+### Test coverage
+
+| Area | Tests |
+|---|---|
+| `_parse_rate` — HTML scraping logic | 13 |
+| `CIMBFXCoordinator` — HTTP fetch & error handling | 5 |
+| `CIMBFXSensor` — entity properties | 8 |
+
+---
+
 ## Data Source
 
 Rate is scraped from [https://www.cimbclicks.com.sg/sgd-to-myr](https://www.cimbclicks.com.sg/sgd-to-myr) and updated every 30 minutes.
