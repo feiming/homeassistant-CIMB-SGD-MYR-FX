@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 114.07 92.54"
+   xmlns="http://www.w3.org/2000/svg">
+  <g id="chevron" transform="matrix(0.74674564,0,0,0.69614359,-429.21294,-10.113662)">
+    <path fill="#E50019" d="M 672.05,36.4 H 593 l 34.98,46.25 h 79.08 z"/>
+    <path fill="#640008" d="m 707.07,82.66 h -79.08 l -34.97,46.29 h 79.04 z"/>
+  </g>
+  <g id="stripe">
+    <path
+       fill="#ffffff" stroke="#ffffff"
+       d="M 58.652911,15.669794 85.792704,47.335838 58.70732,79.110699 H 72.527209 L 98.208261,47.444656 72.418391,15.724203 Z"
+       transform="matrix(0.99985249,0,0,1.009102,-21.707032,-0.33458228)" />
+  </g>
+  <g id="wordmark">
+    <text
+       x="56.809002" y="54.040897"
+       text-anchor="middle"
+       style="font-family:'Arial Black','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:bold;font-size:18.6667px;fill:#ececec;stroke:#001642;stroke-width:1;">SGD - MYR</text>
+  </g>
+</svg>
