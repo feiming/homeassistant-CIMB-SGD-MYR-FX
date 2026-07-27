@@ -18,6 +18,8 @@ A custom Home Assistant integration that polls the live SGD to MYR exchange rate
 
 ## Installation via HACS
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=feiming&repository=homeassistant-CIMB-SGD-MYR-FX&category=integration)
+
 ### Prerequisites
 
 - [HACS](https://hacs.xyz/) installed in your Home Assistant instance
