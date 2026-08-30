@@ -12,5 +12,16 @@
     "abort": {
       "already_configured": "CIMB SGD to MYR FX Rate is already configured."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CIMB SGD to MYR FX Rate",
+        "description": "Change how often the exchange rate is fetched.",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
+    }
   }
 }

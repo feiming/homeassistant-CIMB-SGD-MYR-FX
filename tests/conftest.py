@@ -37,8 +37,17 @@ class _ConfigFlow:
         super().__init_subclass__(**kwargs)
 
 
+class _OptionsFlow:
+    """Minimal stub of OptionsFlow."""
+
+
 class _ConfigEntries:
     ConfigFlow = _ConfigFlow
+    OptionsFlow = _OptionsFlow
+
+
+def _callback(func):
+    return func
 
 
 def _build_stubs():
@@ -60,9 +69,11 @@ def _build_stubs():
     config_entries_mod = ModuleType("homeassistant.config_entries")
     config_entries_mod.ConfigEntry = _ConfigEntry
     config_entries_mod.ConfigFlow = _ConfigFlow
+    config_entries_mod.OptionsFlow = _OptionsFlow
 
     core_mod = ModuleType("homeassistant.core")
     core_mod.HomeAssistant = MagicMock()
+    core_mod.callback = _callback
 
     const_mod = ModuleType("homeassistant.const")
     const_mod.CONF_SCAN_INTERVAL = "scan_interval"

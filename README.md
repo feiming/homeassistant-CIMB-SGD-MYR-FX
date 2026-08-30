@@ -47,6 +47,10 @@ sensor:
 
 Restart Home Assistant again. The sensor `sensor.cimb_sgd_to_myr_fx_rate` will appear with the current rate.
 
+### Changing the update interval after setup
+
+If you added the integration through the UI, open **Settings → Devices & Services → CIMB SGD to MYR FX Rate → Configure**, set a new **Update interval (minutes)** (1–1440) and submit. The integration reloads automatically with the new interval — no restart needed.
+
 ---
 
 ## Manual Installation

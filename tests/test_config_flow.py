@@ -3,7 +3,10 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 
 # conftest.py stubs HA before this import
-from custom_components.cimb_sgd_myr_fx.config_flow import CIMBFXConfigFlow
+from custom_components.cimb_sgd_myr_fx.config_flow import (
+    CIMBFXConfigFlow,
+    CIMBFXOptionsFlow,
+)
 from custom_components.cimb_sgd_myr_fx import DEFAULT_SCAN_INTERVAL
 
 
@@ -58,8 +61,39 @@ class TestCIMBFXConfigFlow:
         await flow.async_step_user(user_input={CONF_SCAN_INTERVAL: 30})
         flow._abort_if_unique_id_configured.assert_called_once()
 
+    def test_get_options_flow(self):
+        entry = MagicMock()
+        flow = CIMBFXConfigFlow.async_get_options_flow(entry)
+        assert isinstance(flow, CIMBFXOptionsFlow)
+
     def test_flow_version(self):
         assert CIMBFXConfigFlow.VERSION == 1
 
     def test_default_scan_interval_is_30(self):
         assert DEFAULT_SCAN_INTERVAL == 30
+
+
+class TestCIMBFXOptionsFlow:
+    def _make_flow(self, data=None, options=None):
+        entry = MagicMock()
+        entry.data = data or {}
+        entry.options = options or {}
+        flow = CIMBFXOptionsFlow(entry)
+        flow.async_create_entry = MagicMock(return_value={"type": "create_entry"})
+        flow.async_show_form = MagicMock(return_value={"type": "form"})
+        return flow
+
+    @pytest.mark.asyncio
+    async def test_shows_form_when_no_input(self):
+        flow = self._make_flow(data={CONF_SCAN_INTERVAL: 30})
+        result = await flow.async_step_init(user_input=None)
+        assert flow.async_show_form.call_args.kwargs["step_id"] == "init"
+        assert result == {"type": "form"}
+
+    @pytest.mark.asyncio
+    async def test_saves_new_interval(self):
+        flow = self._make_flow(data={CONF_SCAN_INTERVAL: 30})
+        await flow.async_step_init(user_input={CONF_SCAN_INTERVAL: 120})
+        flow.async_create_entry.assert_called_once_with(
+            title="", data={CONF_SCAN_INTERVAL: 120}
+        )

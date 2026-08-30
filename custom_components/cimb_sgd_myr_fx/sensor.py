@@ -38,7 +38,10 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the CIMB FX sensor from a config entry (UI flow)."""
-    interval_minutes = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    interval_minutes = entry.options.get(
+        CONF_SCAN_INTERVAL,
+        entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
+    )
     session = async_get_clientsession(hass)
     coordinator = CIMBFXCoordinator(hass, session, timedelta(minutes=interval_minutes))
     await coordinator.async_config_entry_first_refresh()
