@@ -11,7 +11,7 @@ class UpdateFailed(Exception):
 class _DataUpdateCoordinator:
     """Minimal stub of DataUpdateCoordinator."""
 
-    def __init__(self, hass, logger, *, name, update_interval):
+    def __init__(self, hass, logger, *, config_entry=None, name, update_interval):
         self.data = None
 
 
@@ -64,7 +64,7 @@ def _build_stubs():
     aiohttp_mod.async_get_clientsession = MagicMock()
 
     entity_platform_mod = ModuleType("homeassistant.helpers.entity_platform")
-    entity_platform_mod.AddEntitiesCallback = MagicMock()
+    entity_platform_mod.AddConfigEntryEntitiesCallback = MagicMock()
 
     config_entries_mod = ModuleType("homeassistant.config_entries")
     config_entries_mod.ConfigEntry = _ConfigEntry

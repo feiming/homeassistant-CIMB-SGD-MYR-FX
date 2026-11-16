@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CIMB SGD to MYR FX Rate",
+        "description": "Fetches the live SGD to MYR exchange rate from CIMB Clicks.",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "CIMB SGD to MYR FX Rate is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CIMB SGD to MYR FX Rate",
+        "description": "Change how often the exchange rate is fetched.",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
+    }
+  }
+}

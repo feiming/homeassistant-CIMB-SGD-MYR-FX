@@ -10,7 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
@@ -35,7 +35,7 @@ HEADERS = {
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
-    async_add_entities: AddEntitiesCallback,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the CIMB FX sensor from a config entry (UI flow)."""
     interval_minutes = entry.options.get(
@@ -43,7 +43,9 @@ async def async_setup_entry(
         entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
     )
     session = async_get_clientsession(hass)
-    coordinator = CIMBFXCoordinator(hass, session, timedelta(minutes=interval_minutes))
+    coordinator = CIMBFXCoordinator(
+        hass, session, timedelta(minutes=interval_minutes), entry
+    )
     await coordinator.async_config_entry_first_refresh()
     async_add_entities([CIMBFXSensor(coordinator)])
 
@@ -54,17 +56,25 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     coordinator = CIMBFXCoordinator(
         hass, session, timedelta(minutes=DEFAULT_SCAN_INTERVAL)
     )
-    await coordinator.async_config_entry_first_refresh()
+    # No config entry here, so async_config_entry_first_refresh is not allowed.
+    await coordinator.async_refresh()
     async_add_entities([CIMBFXSensor(coordinator)])
 
 
 class CIMBFXCoordinator(DataUpdateCoordinator):
     """Fetches SGD-MYR rate from CIMB Clicks."""
 
-    def __init__(self, hass, session, update_interval: timedelta):
+    def __init__(
+        self,
+        hass,
+        session,
+        update_interval: timedelta,
+        config_entry: ConfigEntry | None = None,
+    ):
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=config_entry,
             name="CIMB SGD-MYR FX",
             update_interval=update_interval,
         )
