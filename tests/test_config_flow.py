@@ -78,7 +78,8 @@ class TestCIMBFXOptionsFlow:
         entry = MagicMock()
         entry.data = data or {}
         entry.options = options or {}
-        flow = CIMBFXOptionsFlow(entry)
+        flow = CIMBFXOptionsFlow()
+        flow.config_entry = entry  # HA injects this; the flow must not set it
         flow.async_create_entry = MagicMock(return_value={"type": "create_entry"})
         flow.async_show_form = MagicMock(return_value={"type": "form"})
         return flow

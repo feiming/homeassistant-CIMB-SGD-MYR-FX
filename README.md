@@ -22,6 +22,7 @@ A custom Home Assistant integration that polls the live SGD to MYR exchange rate
 
 ### Prerequisites
 
+- Home Assistant 2025.2 or newer
 - [HACS](https://hacs.xyz/) installed in your Home Assistant instance
 
 ### Steps
